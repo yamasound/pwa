@@ -1,4 +1,3 @@
-
 // ServiceWorker処理：https://developers.google.com/web/fundamentals/primers/service-workers/?hl=ja
 
 // キャッシュ名とキャッシュファイルの指定
@@ -10,7 +9,7 @@ var urlsToCache = [
 ];
 
 // インストール処理
-self.addEventListener('install', function(event) {
+function my_install(event) {
 	event.waitUntil(
 		caches
 			.open(CACHE_NAME)
@@ -18,10 +17,11 @@ self.addEventListener('install', function(event) {
 				return cache.addAll(urlsToCache);
 			})
 	);
-});
+}
+self.addEventListener('install', my_install)
 
 // リソースフェッチ時のキャッシュロード処理
-self.addEventListener('fetch', function(event) {
+function my_fetch(event) {
 	event.respondWith(
 		caches
 			.match(event.request)
@@ -29,4 +29,5 @@ self.addEventListener('fetch', function(event) {
 				return response ? response : fetch(event.request);
 			})
 	);
-});
+}
+self.addEventListener('fetch', my_fetch)
